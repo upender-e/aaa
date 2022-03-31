@@ -61,15 +61,15 @@ def sh(cmd):
 sh("echo $0")
 sh("ls -l")
 sh("echo done")
-sh("ssh-keygen -f ./upendar -N {passpharse} -m pem -C mykey -y")
+sh("ssh-keygen -f ./key-file -N {passpharse} -m pem -C mykey -y")
 
 
 
 #Reading Content of  A File Into Python Variable. i,e public and private key
-with open('upendar','w+') as file :
+with open('key-file','w+') as file :
     private_key=file.read()
 
-with open('upendar.pub','w+') as file :
+with open('key-file.pub','w+') as file :
     public_key=file.read()
     
 passpharse_key=passpharse
@@ -82,7 +82,7 @@ client_secert_manager = boto3.client('secretsmanager', region_name=os.getenv('re
 #Creating/Adding Our Keys Which are stored in Variables to  Aws Secret manager as Key-value Pairs
 response_sm_create = client_secert_manager.create_secret(
     Name='Insatnce-key',
-    SecretString=json.dumps({"public-key": public_key,"private_key":private_key,"passpharse": passpharse})
+    SecretString=json.dumps({"public_key": public_key,"private_key":private_key,"passpharse": passpharse})
 )    
 
 try:
